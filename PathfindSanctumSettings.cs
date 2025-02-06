@@ -9,6 +9,18 @@ public class PathfindSanctumSettings : ISettings
 {
     public ToggleNode Enable { get; set; } = new ToggleNode(true);
     public ToggleNode DebugEnable { get; set; } = new ToggleNode(false);
+    [Menu("Custom Weight Settings")]
+    public CustomWeightSettings CustomWeights { get; set; } = new CustomWeightSettings();
+
+    [Menu("Advanced Settings")]
+    public AdvancedSettings AdvancedSettings { get; set; } = new AdvancedSettings();
+
+    [Menu("Style Settings")]
+    public StyleSettings StyleSettings { get; set; } = new StyleSettings();
+
+    [Menu("Debug Settings")]
+    public DebugSettings DebugSettings { get; set; } = new DebugSettings();
+
 
     public Dictionary<string, ProfileContent> Profiles =
         new()
