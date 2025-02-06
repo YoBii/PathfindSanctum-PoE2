@@ -294,21 +294,13 @@ public class StyleSettings {
     public ColorNode BackgroundColor { get; set; } = new ColorNode(Color.FromArgb(128, 0, 0, 0));
     public ColorNode BestPathColor { get; set; } = new(Color.Cyan);
     public RangeNode<int> FrameThickness { get; set; } = new RangeNode<int>(5, 0, 10);
+}
 
-    public PathfindSanctumSettings()
-    {
-        CurrentProfile = new ListNode { Values = [.. Profiles.Keys], Value = "Default" };
-        ResetProfile.OnPressed += () => ResetCurrentProfileToDefault();
-    }
+[Submenu(CollapsedByDefault = true)]
+public class DebugSettings {
+    [Menu("Enable Debug Text", "Draw debug information on the floor map")]
+    public ToggleNode DebugEnable { get; set; } = new ToggleNode(false);
 
-    private void ResetCurrentProfileToDefault()
-    {
-        var currentProfileName = CurrentProfile.Value;
-        Profiles[currentProfileName] = currentProfileName switch
-        {
-            "Default" => ProfileContent.CreateDefaultProfile(),
-            "No-Hit" => ProfileContent.CreateNoHitProfile(),
-            _ => ProfileContent.CreateDefaultProfile()
-        };
-    }
+    [Menu("Debug Font Size")]
+    public RangeNode<float> DebugFontSizeMultiplier { get; set; } = new RangeNode<float>(1.0f, 0.5f, 2f);
 }
