@@ -102,6 +102,21 @@ public class ProfileContent
         };
     }
 
+    private static void MapWeightsToProfile<T>(Dictionary<string, float> targetWeights, T sourceWeights, Func<T, string, (bool success, int weight)> getWeight, Action<string, float> setWeight) {
+        foreach (var key in targetWeights.Keys) {
+            var result = getWeight(sourceWeights, key);
+            if (result.success) {
+                setWeight(key, result.weight);
+            }
+        }
+    }
+
+    private static void MapWeightsToSettings<T>(T targetWeights, Dictionary<string, float> sourceWeights, Action<T, string, float> setWeight) {
+        foreach (var key in sourceWeights.Keys.ToList()) {
+            setWeight(targetWeights, key, sourceWeights[key]);
+        }
+    }
+
     public static ProfileContent CreateDefaultProfile()
     {
         var profile = CreateBaseProfile();
