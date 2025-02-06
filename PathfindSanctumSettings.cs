@@ -28,6 +28,24 @@ public class PathfindSanctumSettings : ISettings
             ["Default"] = ProfileContent.CreateDefaultProfile(),
             ["No-Hit"] = ProfileContent.CreateNoHitProfile()
         };
+    internal bool GetWeightValue( string key, out float value) {
+        if (CustomWeights.RoomTypeWeights.GetWeight(key, out int roomValue)) {
+            value = roomValue;
+            return true;
+        }
+        if (CustomWeights.AfflictionWeights.GetWeight(key, out int afflictionValue)) {
+            value = afflictionValue;
+            return true;
+        }
+        if (CustomWeights.RewardWeights.GetWeight(key, out int rewardValue)) {
+            value = rewardValue;
+            return true;
+        }
+        value = 0;
+        return false;
+    }
+}
+
 [Submenu(CollapsedByDefault = true)]
 public class CustomWeightSettings {
     [Menu("Room Type Weights")]
