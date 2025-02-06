@@ -1,14 +1,26 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using ExileCore2.Shared.Attributes;
 using ExileCore2.Shared.Interfaces;
 using ExileCore2.Shared.Nodes;
 
 namespace PathfindSanctum;
 
-public class PathfindSanctumSettings : ISettings
-{
+public class PathfindSanctumSettings : ISettings {
+
     public ToggleNode Enable { get; set; } = new ToggleNode(true);
-    public ToggleNode DebugEnable { get; set; } = new ToggleNode(false);
+
+    public Dictionary<string, ProfileContent> Profiles = new() {
+        [Constants.Profiles.Default] = ProfileContent.CreateDefaultProfile(),
+        [Constants.Profiles.NoHit] = ProfileContent.CreateNoHitProfile()
+    };
+    // We need this here to remember selected profile
+    public int selectedProfileIndex = 0;
+    internal string CurrentProfile { get { return ProfileManager.ProfileNames[selectedProfileIndex]; } }
+
+
     [Menu("Custom Weight Settings")]
     public CustomWeightSettings CustomWeights { get; set; } = new CustomWeightSettings();
 
@@ -21,13 +33,23 @@ public class PathfindSanctumSettings : ISettings
     [Menu("Debug Settings")]
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 
+    [JsonIgnore]
+    internal ProfileManager ProfileManager { get; private set; }
 
-    public Dictionary<string, ProfileContent> Profiles =
-        new()
-        {
-            ["Default"] = ProfileContent.CreateDefaultProfile(),
-            ["No-Hit"] = ProfileContent.CreateNoHitProfile()
+    public PathfindSanctumSettings() {
+        ProfileManager = new ProfileManager(this);
+        Profiles = new() {
+            [Constants.Profiles.Default] = ProfileContent.CreateDefaultProfile(),
+            [Constants.Profiles.NoHit] = ProfileContent.CreateNoHitProfile(),
         };
+        LoadSavedSettingsAfterStart();
+    }
+
+    private async void LoadSavedSettingsAfterStart() {
+        await Task.Delay(1000);
+        ProfileManager.LoadSelectedProfile();
+    }
+
     internal bool GetWeightValue( string key, out float value) {
         if (CustomWeights.RoomTypeWeights.GetWeight(key, out int roomValue)) {
             value = roomValue;
@@ -53,7 +75,7 @@ public class CustomWeightSettings {
         
     [Menu("Affliction Weights")]
     public AfflictionWeightSettings AfflictionWeights{ get; set; } = new AfflictionWeightSettings();
-
+        
     [Menu("Reward Weights")]
     public RewardWeightSettings RewardWeights{ get; set; } = new RewardWeightSettings();
 
