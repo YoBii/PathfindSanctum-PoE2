@@ -20,9 +20,9 @@ public class PathfindSanctumSettings : ISettings {
     public int selectedProfileIndex = 0;
     internal string CurrentProfile { get { return ProfileManager.ProfileNames[selectedProfileIndex]; } }
 
-
-    [Menu("Custom Weight Settings")]
-    public CustomWeightSettings CustomWeights { get; set; } = new CustomWeightSettings();
+    [JsonIgnore]
+    [Menu("Weight Settings")]
+    public CustomWeightSettings Weights { get; set; } = new CustomWeightSettings();
 
     [Menu("Advanced Settings")]
     public AdvancedSettings AdvancedSettings { get; set; } = new AdvancedSettings();
@@ -48,23 +48,6 @@ public class PathfindSanctumSettings : ISettings {
     private async void LoadSavedSettingsAfterStart() {
         await Task.Delay(1000);
         ProfileManager.LoadSelectedProfile();
-    }
-
-    internal bool GetWeightValue( string key, out float value) {
-        if (CustomWeights.RoomTypeWeights.GetWeight(key, out int roomValue)) {
-            value = roomValue;
-            return true;
-        }
-        if (CustomWeights.AfflictionWeights.GetWeight(key, out int afflictionValue)) {
-            value = afflictionValue;
-            return true;
-        }
-        if (CustomWeights.RewardWeights.GetWeight(key, out int rewardValue)) {
-            value = rewardValue;
-            return true;
-        }
-        value = 0;
-        return false;
     }
 }
 

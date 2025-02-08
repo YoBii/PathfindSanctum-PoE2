@@ -33,7 +33,7 @@ public class WeightCalculator(GameController gameController, PathfindSanctumSett
         if (roomType == null)
             return 0;
 
-        if (settings.GetWeightValue(roomType, out float typeWeight))
+        if (settings.Weights.RoomTypeWeights.GetWeight(roomType, out int typeWeight))
         {
             debugText.AppendLine($"{roomType}:{typeWeight}");
             return typeWeight;
@@ -57,7 +57,7 @@ public class WeightCalculator(GameController gameController, PathfindSanctumSett
                 debugText.AppendLine($"{afflictionName}:{dynamicWeight}");
             return (double)dynamicWeight;
         }
-        else if (settings.GetWeightValue(afflictionName, out float afflictionWeight))
+        else if (settings.Weights.AfflictionWeights.GetWeight(afflictionName, out int afflictionWeight))
         {
             if (settings.DebugSettings.DebugEnable.Value)
                 debugText.AppendLine($"{afflictionName}:{afflictionWeight}");
@@ -139,7 +139,7 @@ public class WeightCalculator(GameController gameController, PathfindSanctumSett
     {
         if (
             room?.Reward != null
-            && settings.GetWeightValue(room.Reward, out float rewardWeight)
+            && settings.Weights.RewardWeights.GetWeight(room.Reward, out int rewardWeight)
         )
         {
             if (settings.DebugSettings.DebugEnable.Value)

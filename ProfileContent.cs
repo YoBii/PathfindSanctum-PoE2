@@ -169,7 +169,7 @@ public class ProfileContent
 
         MapWeightsToProfile(
             profile.RoomTypeWeights, 
-            settings.CustomWeights.RoomTypeWeights,
+            settings.Weights.RoomTypeWeights,
             (weights, key) => {
                 bool result = weights.GetWeight(key, out int value);
                 return (result, value);
@@ -179,7 +179,7 @@ public class ProfileContent
         
         MapWeightsToProfile(
             profile.AfflictionWeights,
-            settings.CustomWeights.AfflictionWeights,
+            settings.Weights.AfflictionWeights,
             (weights, key) => {
                 bool result = weights.GetWeight(key, out int value);
                 return (result, value);
@@ -189,7 +189,7 @@ public class ProfileContent
 
         MapWeightsToProfile(
             profile.RewardWeights,
-            settings.CustomWeights.RewardWeights,
+            settings.Weights.RewardWeights,
             (weights, key) => {
                 bool result = weights.GetWeight(key, out int value);
                 return (result, value);
@@ -201,9 +201,9 @@ public class ProfileContent
     }
 
     public void LoadProfile(PathfindSanctumSettings settings) {
-        MapWeightsToSettings(settings.CustomWeights.RoomTypeWeights, RoomTypeWeights, (weights, key, value) => weights.SetWeight(key, value));
-        MapWeightsToSettings(settings.CustomWeights.AfflictionWeights, AfflictionWeights, (weights, key, value) => weights.SetWeight(key, value));
-        MapWeightsToSettings(settings.CustomWeights.RewardWeights, RewardWeights, (weights, key, value) => weights.SetWeight(key, value));
+        MapWeightsToSettings(settings.Weights.RoomTypeWeights, RoomTypeWeights, (weights, key, value) => weights.SetWeight(key, value));
+        MapWeightsToSettings(settings.Weights.AfflictionWeights, AfflictionWeights, (weights, key, value) => weights.SetWeight(key, value));
+        MapWeightsToSettings(settings.Weights.RewardWeights, RewardWeights, (weights, key, value) => weights.SetWeight(key, value));
     }
 
     public ProfileContent Clone()
