@@ -27,9 +27,10 @@ public class PathfindSanctumPlugin : BaseSettingsPlugin<PathfindSanctumSettings>
 
     public override void Render()
     {
-        // hotfix - for some reason this is false in EC2 right now
+        //hotfix - previous InGame state not updating in EC2
         //if (!GameController.Game.IngameState.InGame)
-        //    return;
+        if (!GameController.InGame)
+            return;
 
         if (
             GameController.Area.CurrentArea.Area.RawName == "G2_13"
